@@ -1,22 +1,79 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>案件情報入力</title>
-    <!-- Bootstrap CSSの読み込み -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>顧客登録確認</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container mt-5">
-        <!-- ここにHTMLを書く -->
-    </div>
-    <script type="module">
-        <!-- ここにJSを書く -->
-    </script>
-    <!-- BootstrapのJavaScriptの読み込み -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <div class="container mt-5">
+    <h2>顧客情報確認</h2>
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th>会社名</th>
+          <td id="companyName"></td>
+        </tr>
+        <tr>
+          <th>業種</th>
+          <td id="industry"></td>
+        </tr>
+        <tr>
+          <th>連絡先</th>
+          <td id="contact"></td>
+        </tr>
+        <tr>
+          <th>所在地</th>
+          <td id="location"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button id="backBtn" class="btn btn-secondary">戻る</button>
+    <button id="submitBtn" class="btn btn-primary">登録</button>
+  </div>
+
+  <script type="module">
+    // localStorageからデータを取得
+    const customer = JSON.parse(localStorage.getItem('customer'));
+
+    if (customer) {
+      document.getElementById('companyName').textContent = customer.companyName;
+      document.getElementById('industry').textContent = customer.industry;
+      document.getElementById('contact').textContent = customer.contact;
+      document.getElementById('location').textContent = customer.location;
+    }
+
+    // 戻るボタン
+    document.getElementById('backBtn').addEventListener('click', () => {
+      window.history.back();
+    });
+
+    // 登録ボタン
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      fetch('http://localhost:5440/add-customer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(customer)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.success) {
+          alert('登録完了！');
+          localStorage.removeItem('customer');
+          window.location.href = './list.html'; // 登録後リスト画面へ
+        } else {
+          alert('登録に失敗しました');
+        }
+      })
+      .catch(err => console.error(err));
+    });
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
+

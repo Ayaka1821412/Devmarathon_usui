@@ -31,28 +31,17 @@
         </form>
     </div>
     <script type="module">
-        import config from '../config.js';
-
         document.getElementById('customer-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+            e.preventDefault(); // サーバに送信しない
+
             const formData = new FormData(this);
-            fetch(config.apiUrl + '/add-customer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams([...formData])
-            }).then(response => response.json())
-              .then(data => {
-                if(data.success) {
-                    alert('顧客情報が正常に保存されました。');
-                    // フォームをリセット
-                    document.getElementById('customer-form').reset();
-                } else {
-                    alert('保存に失敗しました。');
-                }
-              })
-              .catch(error => console.error('Error:', error));
+            const customerData = Object.fromEntries(formData.entries());
+
+            // 入力内容を localStorage に保存
+            localStorage.setItem("customer", JSON.stringify(customerData));
+
+            // 確認画面へ遷移
+            window.location.href = "./add-confirm.html";
         });
     </script>
     <!-- BootstrapのJavaScriptの読み込み -->

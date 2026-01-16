@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>顧客詳細</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2>顧客詳細</h2>
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th>ID</th>
+          <td id="id"></td>
+        </tr>
+        <tr>
+          <th>会社名</th>
+          <td id="companyName"></td>
+        </tr>
+        <tr>
+          <th>業種</th>
+          <td id="industry"></td>
+        </tr>
+        <tr>
+          <th>連絡先</th>
+          <td id="contact"></td>
+        </tr>
+        <tr>
+          <th>所在地</th>
+          <td id="location"></td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-secondary" onclick="history.back()">戻る</button>
+  </div>
+
+  <script type="module">
+    import config from "../config.js";
+
+    // URLパラメータから顧客IDを取得
+    const params = new URLSearchParams(window.location.search);
+    const customerId = params.get('id');
+
+    // サーバから顧客情報を取得
+    fetch(`${config.apiUrl}/customers/${customerId}`)
+      .then(res => res.json())
+      .then(customer => {
+        document.getElementById('id').textContent = customer.customer_id;
+        document.getElementById('companyName').textContent = customer.company_name;
+        document.getElementById('industry').textContent = customer.industry;
+        document.getElementById('contact').textContent = customer.contact;
+        document.getElementById('location').textContent = customer.location;
+      })
+      .catch(err => console.error(err));
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laz - Valorant Player</title>
+
+    <!-- Orbitronフォント -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ===========================
+           ★ 全体の基本設定
+           =========================== */
+        body {
+            margin: 0;
+            padding: 0;
+            color: #d9e7ff;
+            font-family: "Arial", sans-serif;
+            overflow-x: hidden;
+            background: #000;
+        }
+
+        /* ===========================
+           ★ 1. 背景パーティクル（粒子）
+           =========================== */
+        #particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -5;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+                                                                                                
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(80, 170, 255, 0.9);
+            border-radius: 50%;
+            animation: float 10s linear infinite;
+            filter: drop-shadow(0 0 6px rgba(100, 180, 255, 1));
+        }
+
+        @keyframes float {
+            from { transform: translateY(0); opacity: 1; }
+            to   { transform: translateY(-1200px); opacity: 0; }
+        }
+
+        /* ===========================
+           ★ 2. 背景に走る光の線
+           =========================== */
+        .light-line {
+            position: fixed;
+            top: 0;
+            left: -200%;
+            width: 300%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 140, 255, 0.2),
+                transparent
+            );
+            animation: lineMove 6s infinite linear;
+            z-index: -4;
+        }
+        @keyframes lineMove {
+            0% { transform: translateX(-20%); }
+            100% { transform: translateX(20%); }
+        }
+
+        /* ===========================
+           ★ 3. ネオン光の背景アニメ
+           =========================== */
+        .bg-animation {
+            position: fixed;
+            top: -20%;
+            left: -20%;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(0,110,255,0.25), transparent),
+                        radial-gradient(circle at 70% 80%, rgba(0,70,200,0.25), transparent),
+                        #000814;
+            animation: bgMove 18s infinite alternate ease-in-out;
+            z-index: -6;
+        }
+
+        @keyframes bgMove {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-5%, -10%) scale(1.1); }
+            100% { transform: translate(10%, 5%) scale(1.05); }
+        }
+
+        /* ===========================
+           ★ 各要素の装飾
+           =========================== */
+        header {
+            text-align: center;
+            padding: 45px 20px;
+                                                                             border-bottom: 3px solid #0e6cff;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 25px rgba(0,150,255,0.4);
+        }
+
+        header h1 {
+            font-family: "Orbitron", sans-serif;
+            font-size: 2.7rem;
+            color: #ffffff;
+            letter-spacing: 3px;
+            margin: 0;
+            text-shadow: 0 0 12px #4ea8ff;
+        }
+
+        main {
+            max-width: 950px;
+            margin: 50px auto;
+            background: rgba(0, 25, 50, 0.6);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(0, 153, 255, 0.4);
+            backdrop-filter: blur(8px);
+        }
+
+        h2 {
+            font-family: "Orbitron", sans-serif;
+            color: #4ea8ff;
+            border-left: 5px solid #4ea8ff;
+            padding-left: 12px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(80,170,255,0.7);
+        }
+        .profile {
+            max-width: 220px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 25px;
+            box-shadow: 0 0 30px rgba(0,150,255,0.7);
+        }
+
+        ul { list-style: none; padding-left: 0; }
+        ul li {
+            padding-left: 22px;
+            position: relative;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        ul li::before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #59b4ff;
+            text-shadow: 0 0 6px #59b4ff;
+        }
+
+        a {
+            color: #80c9ff;
+            text-shadow: 0 0 6px rgba(120,180,255,0.9);
+            transition: 0.2s;
+        }
+        a:hover {
+            color: #b6deff;
+            text-shadow: 0 0 12px rgba(160,210,255,1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            background: rgba(0, 30, 70, 0.6);
+            color: #9fcaff;
+            border-top: 2px solid #0e6cff;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 30px rgba(0,150,255,0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 背景 -->
+<div class="bg-animation"></div>
+<div class="light-line"></div>
+<div id="particles"></div>
+
+<header>
+    <h1>LAZ - VALORANT PLAYER</h1>
+</header>
+
+<main>
+    <section id="profile">
+        <img src="https://yt3.googleusercontent.com/zHa5rcmMbf3wqKlTrEODZbhWruz7l9N-TVuPF1Gy09VilEPrNAarOyYfs_4JxOEm_Dc-XTkliA=s900-c-k-c0x00ffffff-no-rj" class="profile" alt="Laz画像" />
+        <h2>プロフィール</h2>
+        <p>
+            Laz（lazvell）さんは、日本FPS界を代表するトッププレイヤー。
+            超高精度なエイムと冷静な判断力でVALORANTシーンを牽引し、多くのファンを魅了し続けています。
+        </p>
+    </section>
+
+    <section id="career">
+        <h2>経歴</h2>
+        <ul>
+            <li>2020年：ZETA DIVISION に加入</li>
+            <li>2021年：国内大会多数優勝</li>
+            <li>2022年：VCT Masters Reykjavík 世界3位</li>
+            <li>2023年：競技シーンを離れ、配信活動に専念</li>
+        </ul>
+    </section>
+
+    <section id="social">
+        <h2>SNS・配信</h2>
+        <ul>
+            <li><a href="https://x.com/lazvell" target="_blank">X（@lazvell）</a></li>
+            <li><a href="https://www.twitch.tv/lazvell" target="_blank">Twitch</a></li>
+            <li><a href="https://www.youtube.com/user/Lazvell" target="_blank">YouTube</a></li>
+        </ul>
+    </section>
+</main>
+
+<footer>&copy; 2025 Laz Fan Page</footer>
+
+<!-- ===========================
+     ★ パーティクル生成スクリプト
+     =========================== -->
+<script>
+    const container = document.getElementById("particles");
+
+    for (let i = 0; i < 60; i++) {
+        const p = document.createElement("div");
+        p.classList.add("particle");
+        p.style.left = Math.random() * 100 + "%";
+        p.style.top = Math.random() * 120 + "%";
+        p.style.animationDuration = 8 + Math.random() * 10 + "s";
+        p.style.opacity = 0.4 + Math.random() * 0.6;
+        container.appendChild(p);
+    }
+</script>
+
+</body>
+</html>

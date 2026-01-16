@@ -30,6 +30,43 @@ app.get("/customers", async (req, res) => {
   }
 });
 
+app.get("/customers/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      "SELECT * FROM customers WHERE customer_id = $1",
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "顧客が見つかりません" });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 顧客削除
+app.delete("/customers/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      "DELETE FROM customers WHERE customer_id = $1 RETURNING *",
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "顧客が見つかりません" });
+    }
+
+    res.json({ success: true, message: "削除完了" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

@@ -33,7 +33,10 @@
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-secondary" onclick="history.back()">戻る</button>
+    <div class="mb-3">
+      <button class="btn btn-secondary mr-2" onclick="history.back()">戻る</button>
+      <button id="deleteBtn" class="btn btn-danger">削除</button>
+    </div>
   </div>
 
   <script type="module">
@@ -42,7 +45,7 @@
     // URLパラメータから顧客IDを取得
     const params = new URLSearchParams(window.location.search);
     const customerId = params.get('id');
-
+    
     // サーバから顧客情報を取得
     fetch(`${config.apiUrl}/customers/${customerId}`)
       .then(res => res.json())
@@ -54,6 +57,26 @@
         document.getElementById('location').textContent = customer.location;
       })
       .catch(err => console.error(err));
+
+    // 削除ボタンのイベントリスナー
+        // 削除ボタンのイベント
+    document.getElementById('deleteBtn').addEventListener('click', () => {
+      if(confirm("本当に削除しますか？")) {
+        fetch(`${config.apiUrl}/customers/${customerId}`, {
+          method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(data => {
+          if(data.success) {
+            alert('削除完了！');
+            window.location.href = './list.html'; // 削除後一覧画面へ
+          } else {
+            alert('削除に失敗しました: ' + data.message);
+          }
+        })
+        .catch(err => console.error(err));
+      }
+    });
   </script>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

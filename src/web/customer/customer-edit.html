@@ -27,7 +27,7 @@
 
     <div class="form-group">
       <label>所在地</label>
-      <input type="text" id="location" class="form-control">
+      <input type="text" id="customerLocation" class="form-control">
     </div>
 
     <button class="btn btn-primary">保存</button>
@@ -41,6 +41,12 @@ import config from "../config.js";
 const params = new URLSearchParams(location.search);
 const id = params.get("id");
 
+const editForm = document.getElementById("editForm");
+const company_name = document.getElementById("company_name");
+const industry = document.getElementById("industry");
+const contact = document.getElementById("contact");
+const customerLocation = document.getElementById("customerLocation");
+
 // 既存データ取得
 fetch(`${config.apiUrl}/customers/${id}`)
   .then(res => res.json())
@@ -48,7 +54,7 @@ fetch(`${config.apiUrl}/customers/${id}`)
     company_name.value = c.company_name;
     industry.value = c.industry;
     contact.value = c.contact;
-    location.value = c.location;
+    customerLocation.value = c.location;
   });
 
 // 更新
@@ -59,10 +65,10 @@ editForm.addEventListener("submit", e => {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      company_name: company_name.value,
+      companyName: company_name.value,
       industry: industry.value,
       contact: contact.value,
-      location: location.value
+      location: customerLocation.value
     })
   })
   .then(res => res.json())

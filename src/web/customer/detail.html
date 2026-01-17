@@ -35,6 +35,7 @@
     </table>
     <div class="mb-3">
       <button class="btn btn-secondary mr-2" onclick="history.back()">戻る</button>
+      <button id="editBtn" class="btn btn-warning mr-2">編集</button>
       <button id="deleteBtn" class="btn btn-danger">削除</button>
     </div>
   </div>
@@ -57,6 +58,11 @@
         document.getElementById('location').textContent = customer.location;
       })
       .catch(err => console.error(err));
+    
+    // 編集ボタンのイベントリスナー
+    document.getElementById("editBtn").addEventListener("click", () => {
+    location.href = `customer-edit.html?id=${customerId}`;
+  });
 
     // 削除ボタンのイベントリスナー
         // 削除ボタンのイベント

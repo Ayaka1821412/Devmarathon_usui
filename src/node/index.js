@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-
 const port = 5440;
 
 const cors = require("cors");
+
+// 🔴 必ずルーティングより前
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const { Pool } = require("pg");
 const pool = new Pool({
@@ -67,8 +69,28 @@ app.delete("/customers/:id", async (req, res) => {
   }
 });
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// 顧客情報更新
+app.put("/customers/:id", async (req, res) => {
+  const { id } = req.params;
+  const { companyName, industry, contact, location } = req.body;
+
+  try {
+    await pool.query(
+      `UPDATE customers
+       SET company_name = $1,
+           industry = $2,
+           contact = $3,
+           location = $4
+       WHERE customer_id = $5`,
+      [companyName, industry, contact, location, id]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, error: err.message });
+  }
+});
 
 app.post("/add-customer", async (req, res) => {
   try {

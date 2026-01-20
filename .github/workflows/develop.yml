@@ -15,4 +15,4 @@ jobs:
           username: ${{ secrets.DEV_SSH_USER }}
           key: ${{ secrets.DEV_SSHE_SSH_KEY }}
 	  script: |
-  	    bash /app/ayaka_usui/deploy.sh ayaka_usui
+	    bash /app/ayaka_usui/deploy.sh ayaka_usui

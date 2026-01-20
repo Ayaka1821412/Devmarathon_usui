@@ -14,5 +14,5 @@ jobs:
           port: ${{ secrets.DEV_SSH_PORT }}
           username: ${{ secrets.DEV_SSH_USER }}
           key: ${{ secrets.DEV_SSHE_SSH_KEY }}
-	  script: |
-	    bash /app/ayaka_usui/deploy.sh ayaka_usui
+          script: |
+            bash /app/ayaka_usui/deploy.sh ayaka_usui

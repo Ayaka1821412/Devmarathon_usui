@@ -10,9 +10,8 @@ jobs:
       - id: ssh
         uses: invi5H/ssh-action@v1
         with:
-          host: ${{ secrets.DEV_SSH_HOST }}
-          port: ${{ secrets.DEV_SSH_PORT }}
-          username: ${{ secrets.DEV_SSH_USER }}
-          key: ${{ secrets.DEV_SSHE_SSH_KEY }}
-          script: |
-            bash /app/ayaka_usui/deploy.sh ayaka_usui
+          SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
+          SSH_PORT: ${{ secrets.DEV_SSH_PORT }}
+          SSH_USER: ${{ secrets.DEV_SSH_USER }}
+          SSH_KEY: ${{ secrets.DEV_SSHE_SSH_KEY }}
+          SCRIPT: bash /app/ayaka_usui/deploy.sh ayaka_usui

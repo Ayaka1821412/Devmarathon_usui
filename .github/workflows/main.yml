@@ -32,8 +32,5 @@ jobs:
           username: ${{ secrets.PROD_SSH_USER }}
           key: ${{ secrets.PROD_SSHE_SSH_KEY }}
           script: |
-            git config --global --add safe.directory /app
-            git config --global --add safe.directory /app/ayaka_usui
-
             # 本来の deploy.sh を呼び出す
             bash /app/ayaka_usui/deploy.sh ayaka_usui

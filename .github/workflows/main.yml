@@ -1,0 +1,36 @@
+name: main deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Staging
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          port: ${{ secrets.DEV_SSH_PORT }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          key: ${{ secrets.DEV_SSHE_SSH_KEY }}
+          script: |
+            echo "===== STAGING deploy START ====="
+            bash /app/ayaka_usui/deploy.sh ayaka_usui
+
+  deploy-production:
+    needs: deploy-staging   # ← ここが27KMの肝
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.PROD_SSH_HOST }}
+          port: ${{ secrets.PROD_SSH_PORT }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSHE_SSH_KEY }}
+          script: |
+            echo "===== PRODUCTION deploy START ====="
+            bash /app/ayaka_usui/deploy.sh ayaka_usui

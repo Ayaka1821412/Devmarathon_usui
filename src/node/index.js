@@ -12,7 +12,7 @@ app.use(express.json());
 const { Pool } = require("pg");
 const pool = new Pool({
   user: "user_ayaka_usui", // PostgreSQLのユーザー名に置き換えてください
-  host: "db",
+  host: "localhost",
   database: "db_ayaka_usui", // PostgreSQLのデータベース名に置き換えてください
   password: "pass_5440", // PostgreSQLのパスワードに置き換えてください
   port: 5432,
